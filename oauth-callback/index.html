@@ -2,15 +2,33 @@
 <html>
 <head>
     <title>Jiwe Login Redirect</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; text-align: center; padding: 50px 20px; background: #121212; color: white; }
+        .btn { display: inline-block; padding: 15px 30px; background: #ff4500; color: white; text-decoration: none; font-weight: bold; border-radius: 8px; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    </style>
 </head>
 <body>
-    <h2>Authenticating... Returning you to Miraa Express Prototype.</h2>
+    <h2>Authenticating...</h2>
+    <p>Returning you to Miraa Express Prototype.</p>
+    
+    <!-- Fallback link if browser blocks automatic script execution -->
+    <a id="click-here" class="btn" href="#">Click here if you aren't redirected</a>
+
     <script>
-        // Grab the code and state from the URL (?code=xyz&state=abc)
         const urlParams = window.location.search;
-        
-        // Force-bounce the browser over to your custom scheme which Unity intercepts
-        window.location.href = "com.supakoda.miraaexpress://oauth" + urlParams;
+        const deepLinkUrl = "com.supakoda.miraaexpress://oauth" + urlParams;
+
+        // 1. Attempt Auto-Redirect immediately
+        window.location.href = deepLinkUrl;
+
+        // 2. Wire the fallback button just in case the browser blocks the auto-redirect
+        document.getElementById("click-here").href = deepLinkUrl;
+
+        // 3. Fallback automatic backup trigger after 1.5 seconds
+        setTimeout(function() {
+            window.location.href = deepLinkUrl;
+        }, 1500);
     </script>
 </body>
 </html>
